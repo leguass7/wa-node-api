@@ -1,0 +1,13 @@
+{
+    "extends": "./tsconfig.json",
+    "buildOptions": {
+      "noEmitJs": true
+    },
+    "exclude": [
+      "**/dev.ts",
+      "**/dev*.d*",
+      "**/__tests__/**",
+      "**/*.spec.ts",
+      "**/*.test.ts"
+    ]
+  }
