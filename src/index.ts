@@ -40,7 +40,7 @@ export type {
   IReponseAttendants,
 } from './interfaces';
 
-export { createProvider, createMaxbotProvider, createSacDigitalProvider } from './createProvider';
+export { createProvider, createMaxbotProvider, createSacDigitalProvider, ProviderType } from './createProvider';
 export { IResultError, TokenStore } from './providers/BaseProvider';
 export { ForWhoType, IForWhoFilter, IProvider, IAllowedExt } from './providers/BaseProvider/IProvider';
 
