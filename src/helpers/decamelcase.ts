@@ -11,7 +11,7 @@ export function decamelcaseStr(text: string, separator = '_'): string {
   return text;
 }
 
-export default function decamelcase<T>(input: any): T {
+export function decamelcase<T>(input: any): T {
   function mapObject<T>(obj: any): T {
     const ret = {} as T;
     Object.keys(obj).forEach(key => {
