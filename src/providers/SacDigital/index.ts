@@ -1,43 +1,58 @@
-import axios, { AxiosInstance, AxiosRequestConfig, CancelToken, CancelTokenSource } from 'axios';
-import camelcaseKeys from 'camelcase-keys';
+import { AxiosRequestConfig } from 'axios';
 import { isWebUri } from 'valid-url';
 
-import decamelcase from '@helpers/decamelcase';
-import { onResponseError } from '@helpers/onResponseError';
-import { extractExtension, isValidExt } from '@helpers/string';
-import type {
-  IResponseSending,
-  ISender,
-  ICancelSource,
-  IResultError,
-  IAllowedExt,
-  ForWhoType,
-} from '@interfaces/index';
+import { extractExtension, isValidExt, querystring } from '@helpers/string';
+import type { IResponseSending, IReponseDepartment, IReponseContacts, IReponseAttendants } from '@interfaces/index';
 
-import { baseURL, ReqType } from './constants';
-import { forWhoFilterDto, responseSendingDto } from './dto';
+import { BaseProvider, IResultError } from '../BaseProvider';
+import type { ForWhoType, IAllowedExt, IProvider } from '../BaseProvider/IProvider';
+import { baseURL, ReqType, ScopeType } from './constants';
+import {
+  forWhoFilterDto,
+  queryContactFilterDto,
+  responseAttendantsDto,
+  responseContactsDto,
+  responseDepartmentsDto,
+  responseSendingDto,
+} from './dto';
 import type { SacDigitalOptions, ISacDigitalResponseAuth } from './types/api';
+import type { ISacDigitalContactFilter } from './types/contact';
+import type { ISacDigitalResponseDepartments } from './types/department';
 import type { ISacDigitalRequestSend } from './types/sending';
+
+const defaultScopes: ScopeType[] = [
+  'edit',
+  'write',
+  'import',
+  'remove',
+  'send',
+  'contact',
+  'channel',
+  'department',
+  'group',
+  'tag',
+  'operator',
+  'protocol',
+  'notification',
+  'manager',
+];
 
 /**
  * Class to interact with SacDigital server
  * - https://sac.digital/
  * @see https://alertrack.docs.apiary.io/#introduction
  */
-export class SacDigital implements ISender {
-  public Api: AxiosInstance;
+export class SacDigital extends BaseProvider implements IProvider {
   private authenticating: boolean;
-  private cancelSources: ICancelSource[];
   private config: SacDigitalOptions;
-  private loggingPrefix: string;
   private allowedExt: IAllowedExt;
 
   constructor(options: SacDigitalOptions) {
-    this.config = { token: '', timeout: 10000, debug: false, baseURL, ...options };
+    super({ loggingPrefix: 'SacDigital', baseURL, timeout: 10000, debug: false, ...options });
+
+    this.config = { scopes: [...defaultScopes], token: '', ...options };
     this.authenticating = false;
-    this.loggingPrefix = 'SacDigital';
-    this.Api = axios.create({ baseURL });
-    this.cancelSources = [];
+
     this.allowedExt = {
       file: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pps'],
       image: ['jpg', 'jpeg', 'png', 'gif'],
@@ -45,40 +60,7 @@ export class SacDigital implements ISender {
       video: ['mp4'],
     };
 
-    if (!this.config.token) this.init().then(() => this.log('INIT'));
-  }
-
-  private log(...args: any[]) {
-    if (this.config.debug) {
-      // eslint-disable-next-line no-console
-      console.log(this.loggingPrefix, ...args, '\n');
-    }
-  }
-
-  private buildError(message: string): IResultError {
-    return { status: false, message };
-  }
-
-  private getCancelToken(): CancelTokenSource {
-    return axios.CancelToken.source();
-  }
-
-  private addCancelSource(source: CancelTokenSource) {
-    this.cancelSources.push({
-      idToken: source.token,
-      source,
-    });
-    return this;
-  }
-
-  private removeCancelSource(idTokenSource?: string | CancelToken) {
-    if (idTokenSource) {
-      const newList = this.cancelSources.filter(({ idToken }) => idToken !== idTokenSource);
-      this.cancelSources = newList || [];
-      return this;
-    }
-    this.cancelSources = [];
-    return this;
+    this.init().then(() => this.log('INIT'));
   }
 
   private async authorize() {
@@ -89,42 +71,16 @@ export class SacDigital implements ISender {
         {
           client: this.config.clientId,
           password: this.config.clientSecret,
-          scopes: ['manager', 'send', 'contact', 'import', 'notification'],
+          scopes: this.config.scopes,
         },
         { timeout: this.config.timeout },
       );
       this.authenticating = false;
       return response && response.data;
-    } catch (error) {
+    } catch {
       this.authenticating = false;
       return null;
     }
-  }
-
-  private configureRequests() {
-    const token = `Bearer ${this.config.token}`;
-    this.Api.interceptors.request.use(config => {
-      config.headers['user-agent'] = `wa-node-api/1.0 (+https://github.com/leguass7/wa-node-api.git)`;
-      if (token) config.headers['authorization'] = token;
-
-      config.data = decamelcase(config.data);
-      this.log('REQUEST:', config.data);
-      return config;
-    });
-    return this;
-  }
-
-  private configureResponses() {
-    this.Api.interceptors.response.use(response => {
-      this.log('RESPONSE:', response.data || response);
-      return camelcaseKeys(response.data, { deep: true });
-    }, onResponseError);
-    return this;
-  }
-
-  private configureAxios() {
-    this.Api = axios.create({ baseURL: this.config.baseURL });
-    return this.configureRequests().configureResponses();
   }
 
   private isValidPayload(url: string, type?: keyof IAllowedExt): boolean {
@@ -133,22 +89,20 @@ export class SacDigital implements ISender {
   }
 
   private async init() {
-    const auth = await this.authorize();
-    if (auth && auth.token) this.config.token = auth.token;
-    return this.configureAxios();
+    if (!this.config.token) {
+      const auth = await this.authorize();
+      if (auth && auth.token) this.config.token = auth.token;
+    }
+
+    if (this.config.token) {
+      this.setApiToken(this.config.token);
+      return this.configureAxios(this.config.token);
+    }
+
+    throw new TypeError('not authorized');
   }
 
-  /**
-   * Cancel all requests to `Maxbot` server
-   * @method cancelAll
-   */
-  public cancelAll() {
-    this.cancelSources.forEach(({ source }) => source && source.cancel());
-    this.removeCancelSource();
-    return this;
-  }
-
-  private async waitAuth() {
+  private async waitForAuthentication() {
     const check = () => Boolean(this.authenticating);
 
     const waitFlag = (cb: (value: unknown) => void) => {
@@ -159,12 +113,12 @@ export class SacDigital implements ISender {
   }
 
   public async isReady(force?: boolean) {
-    if (!!this.authenticating) await this.waitAuth();
+    if (!!this.authenticating) await this.waitForAuthentication();
     else if (force) await this.init();
     return !!this.config.token;
   }
 
-  async apiPost(route: ReqType, payload = {}, config: AxiosRequestConfig = {}) {
+  async apiPost(route: ReqType, payload: Record<string, any>, config: AxiosRequestConfig = {}) {
     const ready = await this.isReady();
     if (ready) {
       const source = this.getCancelToken();
@@ -179,11 +133,29 @@ export class SacDigital implements ISender {
     return this.buildError('API is not ready');
   }
 
+  async apiGet(route: ReqType, query?: Record<string, any>, config: AxiosRequestConfig = {}) {
+    const ready = await this.isReady();
+    if (ready) {
+      const source = this.getCancelToken();
+      const cancelToken = source.token;
+      this.addCancelSource(source);
+
+      const queryRoute = query ? `${route}?${querystring(query)}` : route;
+
+      const result = await this.Api.get(queryRoute, { timeout: this.config.timeout, cancelToken, ...config });
+
+      this.removeCancelSource(cancelToken);
+      return result as any;
+    }
+    return this.buildError('API is not ready');
+  }
+
   private async sendNotification(payload: ISacDigitalRequestSend): Promise<IResponseSending | IResultError> {
     try {
       const res = await this.apiPost(ReqType.NOTIFICATION, payload);
+
       return responseSendingDto(res);
-    } catch (error) {
+    } catch {
       return this.buildError('unexpected error');
     }
   }
@@ -200,6 +172,7 @@ export class SacDigital implements ISender {
 
   async sendImage(contactId: ForWhoType, urlImage: string, text?: string): Promise<IResponseSending | IResultError> {
     const contact = forWhoFilterDto(contactId);
+
     if (contact && this.isValidPayload(urlImage, 'image')) {
       const payload: ISacDigitalRequestSend = { contact, type: 'image', url: urlImage };
       if (text) payload.text = text;
@@ -237,5 +210,21 @@ export class SacDigital implements ISender {
       return res;
     }
     return this.buildError('invalid payload');
+  }
+
+  async getServiceSector(): Promise<IReponseDepartment | IResultError> {
+    const res: ISacDigitalResponseDepartments = await this.apiGet(ReqType.DEPARTMENT);
+    return responseDepartmentsDto(res);
+  }
+
+  async getContact(filter: ISacDigitalContactFilter): Promise<IReponseContacts | IResultError> {
+    const query = queryContactFilterDto(filter);
+    const res = await this.apiGet(ReqType.GETCONTACT, query);
+    return responseContactsDto(res);
+  }
+
+  async getAttendant(): Promise<IReponseAttendants | IResultError> {
+    const res = await this.apiGet(ReqType.GETATTENDANT);
+    return responseAttendantsDto(res);
   }
 }

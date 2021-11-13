@@ -1,4 +1,6 @@
-export interface MaxbotOptions {
+import { BaseProviderOptions } from '../../BaseProvider';
+
+export interface MaxbotOptions extends Partial<BaseProviderOptions> {
   token: string;
   /** default 5000 ms  */
   timeout?: number;
@@ -10,4 +12,11 @@ export interface MaxbotOptions {
 export interface IMaxbotResponse {
   status: 0 | 1;
   msg: 'Success' | 'Failure';
+}
+
+export interface FilterByDate {
+  /** YYYY-MM-DD */
+  dateStart?: string;
+  /** YYYY-MM-DD */
+  dateStop?: string;
 }

@@ -1,35 +1,21 @@
-import { AxiosInstance } from 'axios';
-import type { IResponseSending, ForWhoType, ISender, IResultError } from '../../interfaces/index';
+import type { IResponseSending, IReponseContacts, IReponseAttendants, IReponseDepartment } from '../../interfaces/index';
+import { BaseProvider, IResultError } from '../BaseProvider';
+import { ForWhoType, IProvider } from '../BaseProvider/IProvider';
 import { ReqType } from './constants';
 import type { MaxbotOptions } from './types/api';
+import type { IMaxbotContactFilter } from './types/contact';
 import type { IResponseStatus } from './types/status';
 /**
  * Class to interact with maxbot server
  * @see https://mbr.maxbot.com.br/doc-api-v1.php
  */
-export declare class Maxbot implements ISender {
-    Api: AxiosInstance;
-    private cancelSources;
+export declare class Maxbot extends BaseProvider implements IProvider {
     private config;
-    private loggingPrefix;
     private ready;
     private allowedExt;
     constructor(options: MaxbotOptions);
-    private log;
-    private buildError;
-    private getCancelToken;
-    private addCancelSource;
-    private removeCancelSource;
-    private configureRequests;
-    private configureResponses;
-    private configureAxios;
     private isValidPayload;
     apiPost(type: ReqType, payload?: {}): Promise<any>;
-    /**
-     * Cancel all requests to `Maxbot` server
-     * @method cancelAll
-     */
-    cancelAll(): this;
     getStatus(): Promise<IResponseStatus>;
     isReady(force?: boolean): Promise<boolean>;
     sendText(whatsapp: ForWhoType, text: string): Promise<IResponseSending | IResultError>;
@@ -37,4 +23,7 @@ export declare class Maxbot implements ISender {
     sendFile(whatsapp: ForWhoType, urlFile: string): Promise<IResponseSending | IResultError>;
     sendSound(whatsapp: ForWhoType, urlSound: string): Promise<IResponseSending | IResultError>;
     sendVideo(whatsapp: ForWhoType, urlVideo: string, _text?: string): Promise<IResponseSending | IResultError>;
+    getServiceSector(): Promise<IReponseDepartment>;
+    getContact(filter: IMaxbotContactFilter): Promise<IReponseContacts>;
+    getAttendant(): Promise<IReponseAttendants>;
 }

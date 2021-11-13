@@ -1,4 +1,12 @@
-import type { ForWhoType, IResponseSending } from '../../interfaces/index';
+import type { IResponseSending, IReponseContacts, IReponseDepartment } from '../../interfaces/index';
+import type { IReponseAttendants } from '../../interfaces/IAttendant';
+import type { ForWhoType } from '../BaseProvider/IProvider';
+import type { IMaxbotResponseAttendant } from './types/attendant';
+import type { IMaxbotResponseContacts } from './types/contact';
 import type { IMaxbotRequestSend, IMaxbotResponseSending } from './types/sending';
+import type { IMaxbotResponseServiceSector } from './types/servicesector';
 export declare function forWhoFilterDto(forWhoFilter: ForWhoType): Partial<IMaxbotRequestSend>;
 export declare function responseSendingDto(data: IMaxbotResponseSending): IResponseSending;
+export declare function responseServiceSectorDto(data: IMaxbotResponseServiceSector): IReponseDepartment;
+export declare function responseContactsDto(dataContacts: IMaxbotResponseContacts): IReponseContacts;
+export declare function responseAttendantsDto(data: IMaxbotResponseAttendant): IReponseAttendants;

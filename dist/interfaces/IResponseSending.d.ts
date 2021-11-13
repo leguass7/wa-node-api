@@ -1,5 +1,5 @@
 export interface IResponseApi {
-    status: boolean;
+    status: boolean | 0 | 1;
     message?: string;
 }
 export interface IResponseSending extends IResponseApi {

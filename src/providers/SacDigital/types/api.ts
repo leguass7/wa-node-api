@@ -1,10 +1,11 @@
-export interface SacDigitalOptions {
+import { BaseProviderOptions } from '../../BaseProvider';
+import { ScopeType } from '../constants';
+
+export interface SacDigitalOptions extends Partial<BaseProviderOptions> {
   token?: string;
   clientId: string;
   clientSecret: string;
-  timeout?: number;
-  baseURL?: string;
-  debug?: boolean;
+  scopes?: ScopeType[];
 }
 
 export interface ISacDigitalResponseAuth {

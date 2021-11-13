@@ -16,8 +16,24 @@ type ProviderType = keyof Provider;
  */
 export function createProvider(provider: 'maxbot', options: MaxbotOptions): Maxbot;
 export function createProvider(provider: 'sacdigital', options: SacDigitalOptions): SacDigital;
-export function createProvider(provider: ProviderType, options: any) {
+export function createProvider(provider: ProviderType, options: never) {
   if (provider === 'maxbot') return new Maxbot(options);
   if (provider === 'sacdigital') return new SacDigital(options);
   throw new TypeError('undefined provider');
+}
+
+/**
+ * Factory of new Maxbot provider
+ * @function createMaxbotProvider
+ */
+export function createMaxbotProvider(options: MaxbotOptions): Maxbot {
+  return new Maxbot(options);
+}
+
+/**
+ * Factory of new SacDigital provider
+ * @function createSacDigitalProvider
+ */
+export function createSacDigitalProvider(options: SacDigitalOptions): SacDigital {
+  return new SacDigital(options);
 }

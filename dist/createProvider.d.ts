@@ -8,3 +8,13 @@ import { SacDigitalOptions } from './providers/SacDigital/types/api';
  */
 export declare function createProvider(provider: 'maxbot', options: MaxbotOptions): Maxbot;
 export declare function createProvider(provider: 'sacdigital', options: SacDigitalOptions): SacDigital;
+/**
+ * Factory of new Maxbot provider
+ * @function createMaxbotProvider
+ */
+export declare function createMaxbotProvider(options: MaxbotOptions): Maxbot;
+/**
+ * Factory of new SacDigital provider
+ * @function createSacDigitalProvider
+ */
+export declare function createSacDigitalProvider(options: SacDigitalOptions): SacDigital;

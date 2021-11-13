@@ -1,7 +1,8 @@
 import type { CancelToken, CancelTokenSource } from 'axios';
 
 import { IResultError } from '.';
-import type { IResponseSending } from './IResponseSending';
+import { IReponseDepartment } from '../../interfaces/IDepartment';
+import type { IResponseSending } from '../../interfaces/IResponseSending';
 
 export interface ICancelSource {
   idToken: CancelToken | string;
@@ -24,7 +25,7 @@ export interface IAllowedExt {
   video: string[];
 }
 
-export interface ISender {
+export interface IProvider {
   /**
    * @param force Force interaction with API server
    * @method isReady
@@ -59,4 +60,6 @@ export interface ISender {
     urlVideo: string,
     text?: string,
   ) => Promise<IResponseSending | IResultError>;
+
+  getServiceSector: () => Promise<IReponseDepartment | IResultError>;
 }

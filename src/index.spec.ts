@@ -1,23 +1,26 @@
 import { createProvider, Maxbot, SacDigital } from '.';
 
 const env = {
-  token: process.env.MAXBOT_TOKEN,
+  tokenMaxbot: process.env.MAXBOT_TOKEN,
+  tokenSacDigital: process.env.SACDIGITAL_TEST_TOKEN,
+
   whatsappTest: process.env.MAXBOT_TEST_WHATSAPP,
   clientId: process.env.SACDIGITAL_ID,
   clientSecret: process.env.SACDIGITAL_SECRET,
 };
 
 describe('SacDigital Test', () => {
-  let provider: SacDigital;
+  let provider: SacDigital | Maxbot;
   jest.setTimeout(10000);
 
   afterAll(async () => {
+    provider.cancelAll();
     provider = null;
     await new Promise(resolve => setTimeout(() => resolve(true), 5000)); // avoid jest open handle error
   });
 
   test('Should create maxbot provider', async () => {
-    const provider = createProvider('maxbot', { token: env.token });
+    provider = createProvider('maxbot', { token: env.tokenMaxbot });
     expect(provider).toBeInstanceOf(Maxbot);
   });
 
@@ -25,7 +28,7 @@ describe('SacDigital Test', () => {
     provider = createProvider('sacdigital', {
       clientId: env.clientId,
       clientSecret: env.clientSecret,
-      debug: true,
+      // token: env.tokenSacDigital,
     });
     await provider.isReady(true);
 

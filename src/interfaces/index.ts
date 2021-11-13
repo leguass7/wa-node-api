@@ -1,3 +1,4 @@
 export * from './IResponseSending';
-export * from './IResultError';
-export * from './ISender';
+export * from './IContact';
+export * from './IDepartment';
+export * from './IAttendant';
