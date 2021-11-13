@@ -3,11 +3,7 @@ import { Maxbot } from './providers/Maxbot';
 import { MaxbotOptions } from './providers/Maxbot/types/api';
 import { SacDigital } from './providers/SacDigital';
 import { SacDigitalOptions } from './providers/SacDigital/types/api';
-interface Provider {
-    maxbot: Maxbot;
-    sacdigital: SacDigital;
-}
-export declare type ProviderType = keyof Provider;
+export declare type ProviderType = 'maxbot' | 'sacdigital';
 /**
  * Factory of new provider
  * @function createProvider
@@ -24,4 +20,3 @@ export declare function createMaxbotProvider(options: MaxbotOptions): Maxbot;
  * @function createSacDigitalProvider
  */
 export declare function createSacDigitalProvider(options: SacDigitalOptions): SacDigital;
-export {};

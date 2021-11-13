@@ -4,12 +4,7 @@ import { MaxbotOptions } from './providers/Maxbot/types/api';
 import { SacDigital } from './providers/SacDigital';
 import { SacDigitalOptions } from './providers/SacDigital/types/api';
 
-interface Provider {
-  maxbot: Maxbot;
-  sacdigital: SacDigital;
-}
-
-export type ProviderType = keyof Provider;
+export type ProviderType = 'maxbot' | 'sacdigital';
 
 /**
  * Factory of new provider
