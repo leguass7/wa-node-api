@@ -91,11 +91,15 @@ export class SacDigital extends BaseProvider implements IProvider {
   private async init() {
     if (!this.config.token) {
       const auth = await this.authorize();
-      if (auth && auth.token) this.config.token = auth.token;
+      if (auth && auth.token) {
+        this.config.token = auth.token;
+        this.setApiToken({ token: this.config.token, expires: auth.expiresIn });
+      }
+    } else {
+      this.setApiToken(this.config.token);
     }
 
     if (this.config.token) {
-      this.setApiToken(this.config.token);
       return this.configureAxios(this.config.token);
     }
 

@@ -45,6 +45,7 @@ export class Maxbot extends BaseProvider implements IProvider {
       video: [],
     };
 
+    this.setApiToken(this.config.token);
     return this.configureAxios();
   }
 
