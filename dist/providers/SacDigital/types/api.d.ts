@@ -2,6 +2,9 @@ import { BaseProviderOptions } from '../../BaseProvider';
 import { ScopeType } from '../constants';
 export interface SacDigitalOptions extends Partial<BaseProviderOptions> {
     token?: string;
+    tokenExpireDate?: string;
+    /** check before exipres */
+    maxMinutes?: number;
     clientId: string;
     clientSecret: string;
     scopes?: ScopeType[];

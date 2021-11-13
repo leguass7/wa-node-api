@@ -17,6 +17,7 @@ export declare class SacDigital extends BaseProvider implements IProvider {
     constructor(options: SacDigitalOptions);
     private authorize;
     private isValidPayload;
+    private isExpiredToken;
     private init;
     private waitForAuthentication;
     isReady(force?: boolean): Promise<boolean>;

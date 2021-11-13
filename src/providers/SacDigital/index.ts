@@ -1,5 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
+import { parse, isValid, differenceInMinutes } from 'date-fns';
 import { isWebUri } from 'valid-url';
 
 import { extractExtension, isValidExt, querystring } from '@helpers/string';
@@ -49,7 +50,7 @@ export class SacDigital extends BaseProvider implements IProvider {
   private allowedExt: IAllowedExt;
 
   constructor(options: SacDigitalOptions) {
-    super({ loggingPrefix: 'SacDigital', baseURL, timeout: 10000, debug: false, ...options });
+    super({ loggingPrefix: 'SacDigital', baseURL, timeout: 10000, debug: false, maxMinutes: 1440, ...options });
 
     this.config = { scopes: [...defaultScopes], token: '', ...options };
     this.authenticating = false;
@@ -89,12 +90,27 @@ export class SacDigital extends BaseProvider implements IProvider {
     return !!(isWebUri(url) && isValidExt(extension, this.allowedExt, type));
   }
 
-  private async init() {
+  private isExpiredToken() {
+    const expiresDate = this.config?.tokenExpireDate;
+    if (!expiresDate) return false;
+
+    const dateExp = parse(expiresDate, 'yyyy-MM-dd HH:mm:ss', new Date());
+    if (!isValid(dateExp)) return true;
+    const diff = differenceInMinutes(dateExp, new Date());
+    return !!(diff < this.config.maxMinutes);
+  }
+
+  private async init(): Promise<this> {
     if (!this.config.token) {
       const auth = await this.authorize();
       if (auth && auth.token) {
         this.config.token = auth.token;
         this.setApiToken({ token: auth.token, expires: auth.expiresIn });
+      }
+    } else if (this.config?.tokenExpireDate) {
+      if (this.isExpiredToken()) {
+        this.config.token = '';
+        return this.init();
       }
     } else {
       this.setApiToken(this.config.token);
@@ -118,8 +134,13 @@ export class SacDigital extends BaseProvider implements IProvider {
   }
 
   public async isReady(force?: boolean) {
-    if (!!this.authenticating) await this.waitForAuthentication();
-    else if (force) await this.init();
+    if (this.isExpiredToken()) {
+      await this.init();
+    } else {
+      if (!!this.authenticating) await this.waitForAuthentication();
+      else if (force) await this.init();
+    }
+
     return !!this.config.token;
   }
 

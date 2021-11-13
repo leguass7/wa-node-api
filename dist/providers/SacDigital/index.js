@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SacDigital = void 0;
 const camelcase_keys_1 = __importDefault(require("camelcase-keys"));
+const date_fns_1 = require("date-fns");
 const valid_url_1 = require("valid-url");
 const string_1 = require("../../helpers/string");
 const BaseProvider_1 = require("../BaseProvider");
@@ -36,7 +37,7 @@ class SacDigital extends BaseProvider_1.BaseProvider {
     config;
     allowedExt;
     constructor(options) {
-        super({ loggingPrefix: 'SacDigital', baseURL: constants_1.baseURL, timeout: 10000, debug: false, ...options });
+        super({ loggingPrefix: 'SacDigital', baseURL: constants_1.baseURL, timeout: 10000, debug: false, maxMinutes: 1440, ...options });
         this.config = { scopes: [...defaultScopes], token: '', ...options };
         this.authenticating = false;
         this.allowedExt = {
@@ -67,12 +68,28 @@ class SacDigital extends BaseProvider_1.BaseProvider {
         const extension = url && (0, string_1.extractExtension)(url);
         return !!((0, valid_url_1.isWebUri)(url) && (0, string_1.isValidExt)(extension, this.allowedExt, type));
     }
+    isExpiredToken() {
+        const expiresDate = this.config?.tokenExpireDate;
+        if (!expiresDate)
+            return false;
+        const dateExp = (0, date_fns_1.parse)(expiresDate, 'yyyy-MM-dd HH:mm:ss', new Date());
+        if (!(0, date_fns_1.isValid)(dateExp))
+            return true;
+        const diff = (0, date_fns_1.differenceInMinutes)(dateExp, new Date());
+        return !!(diff < this.config.maxMinutes);
+    }
     async init() {
         if (!this.config.token) {
             const auth = await this.authorize();
             if (auth && auth.token) {
                 this.config.token = auth.token;
                 this.setApiToken({ token: auth.token, expires: auth.expiresIn });
+            }
+        }
+        else if (this.config?.tokenExpireDate) {
+            if (this.isExpiredToken()) {
+                this.config.token = '';
+                return this.init();
             }
         }
         else {
@@ -94,10 +111,15 @@ class SacDigital extends BaseProvider_1.BaseProvider {
         return new Promise(resolve => waitFlag(resolve));
     }
     async isReady(force) {
-        if (!!this.authenticating)
-            await this.waitForAuthentication();
-        else if (force)
+        if (this.isExpiredToken()) {
             await this.init();
+        }
+        else {
+            if (!!this.authenticating)
+                await this.waitForAuthentication();
+            else if (force)
+                await this.init();
+        }
         return !!this.config.token;
     }
     async apiPost(route, payload, config = {}) {
