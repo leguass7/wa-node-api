@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, CancelToken, CancelTokenSource } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 
-import decamelcase from '@helpers/decamelcase';
+import { decamelcase } from '@helpers/decamelcase';
 
 import { ICancelSource } from './IProvider';
 import { onResponseError, IResultError, convertStringResponseData } from './onResponseError';

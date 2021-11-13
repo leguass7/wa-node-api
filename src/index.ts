@@ -26,6 +26,7 @@ export type {
   ISacDigitalResponseContacts,
   ISacDigitalResponseDepartments,
 } from './providers/SacDigital/types';
+export { authScopes } from './providers/SacDigital/constants';
 
 // Provider commons
 export type {
@@ -42,3 +43,6 @@ export type {
 export { createProvider, createMaxbotProvider, createSacDigitalProvider } from './createProvider';
 export { IResultError } from './providers/BaseProvider';
 export { ForWhoType, IForWhoFilter } from './providers/BaseProvider/IProvider';
+
+//Helpers
+export { decamelcase } from './helpers/decamelcase';
