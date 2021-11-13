@@ -5,6 +5,6 @@ export type { SacDigitalOptions, ISacDigitalRequestSend, ISacDigitalResponse, IS
 export { authScopes } from './providers/SacDigital/constants';
 export type { IResponseApi, IResponseSending, IContact, IReponseContacts, IDepartment, IReponseDepartment, IAttendant, IReponseAttendants, } from './interfaces';
 export { createProvider, createMaxbotProvider, createSacDigitalProvider } from './createProvider';
-export { IResultError } from './providers/BaseProvider';
+export { IResultError, TokenStore } from './providers/BaseProvider';
 export { ForWhoType, IForWhoFilter, IProvider, IAllowedExt } from './providers/BaseProvider/IProvider';
 export { decamelcase } from './helpers/decamelcase';
