@@ -1,3 +1,4 @@
+import { IProvider } from '.';
 import { Maxbot } from './providers/Maxbot';
 import { MaxbotOptions } from './providers/Maxbot/types/api';
 import { SacDigital } from './providers/SacDigital';
@@ -11,8 +12,8 @@ export declare type ProviderType = keyof Provider;
  * Factory of new provider
  * @function createProvider
  */
-export declare function createProvider(provider: 'maxbot', options: MaxbotOptions): Maxbot;
-export declare function createProvider(provider: 'sacdigital', options: SacDigitalOptions): SacDigital;
+export declare function createProvider(provider: 'maxbot', options: MaxbotOptions): Maxbot | IProvider;
+export declare function createProvider(provider: 'sacdigital', options: SacDigitalOptions): SacDigital | IProvider;
 /**
  * Factory of new Maxbot provider
  * @function createMaxbotProvider
