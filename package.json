@@ -4,7 +4,12 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leguass7/wa-node-api.git"
+  },
   "author": "Leandro Sbrissa <leandro.sbrissa@hotmail.com>",
+  "keywords": ["nodejs", "whatsapp", "api", "maxbot", "sacdigital"],
   "files": [
     "dist/",
     "LICENSE",
