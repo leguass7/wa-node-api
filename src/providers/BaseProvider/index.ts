@@ -14,7 +14,15 @@ export interface BaseProviderOptions {
   debug?: boolean;
   timeout: number;
 }
+
+export interface TokenStore {
+  token: string;
+  expires?: number;
+}
+
+type ApiTokenSetter = string | TokenStore;
 export class BaseProvider {
+  private tokenStore: TokenStore;
   private debug: boolean;
   private loggingPrefix: string;
   private cancelSources: ICancelSource[];
@@ -70,10 +78,12 @@ export class BaseProvider {
   protected configureRequests(token?: string) {
     this.Api.interceptors.request.use(config => {
       config.headers = {
-        'user-agent': `wa-node-api/1.0 (+https://github.com/leguass7/wa-node-api.git)`,
+        'User-Agent': `wa-node-api/v1 (+https://github.com/leguass7/wa-node-api.git) axios/${axios.VERSION}`,
         'Content-Type': 'application/json',
       };
-      if (token) config.headers['authorization'] = token;
+
+      const sendToken = token || this.tokenStore?.token;
+      if (sendToken) config.headers['authorization'] = sendToken;
 
       config.data = decamelcase(config.data);
       this.log('REQUEST:', config.data);
@@ -86,8 +96,18 @@ export class BaseProvider {
     return this.configureRequests(token).configureResponses();
   }
 
-  public setApiToken(token: string) {
-    this.Api.defaults.headers['authorization'] = token;
+  public setApiToken(token: ApiTokenSetter) {
+    if (typeof token === 'string') {
+      this.tokenStore = { token };
+    } else {
+      this.tokenStore = token;
+    }
+
+    this.Api.defaults.headers['authorization'] = this.tokenStore.token;
+  }
+
+  public getApiToken(): TokenStore {
+    return this.tokenStore;
   }
 
   /**
