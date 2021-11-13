@@ -1,3 +1,4 @@
+import { IProvider } from '.';
 import { Maxbot } from './providers/Maxbot';
 import { MaxbotOptions } from './providers/Maxbot/types/api';
 import { SacDigital } from './providers/SacDigital';
@@ -8,7 +9,7 @@ interface Provider {
   sacdigital: SacDigital;
 }
 
-type ProviderType = keyof Provider;
+export type ProviderType = keyof Provider;
 
 /**
  * Factory of new provider
@@ -16,7 +17,7 @@ type ProviderType = keyof Provider;
  */
 export function createProvider(provider: 'maxbot', options: MaxbotOptions): Maxbot;
 export function createProvider(provider: 'sacdigital', options: SacDigitalOptions): SacDigital;
-export function createProvider(provider: ProviderType, options: never) {
+export function createProvider(provider: ProviderType, options: any): IProvider {
   if (provider === 'maxbot') return new Maxbot(options);
   if (provider === 'sacdigital') return new SacDigital(options);
   throw new TypeError('undefined provider');
