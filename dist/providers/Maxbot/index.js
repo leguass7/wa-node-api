@@ -24,6 +24,7 @@ class Maxbot extends BaseProvider_1.BaseProvider {
             sound: ['mp3'],
             video: [],
         };
+        this.setApiToken(this.config.token);
         return this.configureAxios();
     }
     isValidPayload(url, type) {

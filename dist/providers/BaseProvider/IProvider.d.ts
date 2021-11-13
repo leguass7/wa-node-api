@@ -1,5 +1,5 @@
 import type { CancelToken, CancelTokenSource } from 'axios';
-import { IResultError } from '.';
+import { IResultError, TokenStore } from '.';
 import { IReponseDepartment } from '../../interfaces/IDepartment';
 import type { IResponseSending } from '../../interfaces/IResponseSending';
 export interface ICancelSource {
@@ -20,6 +20,11 @@ export interface IAllowedExt {
     video: string[];
 }
 export interface IProvider {
+    /** Cancel all pending requests */
+    cancelAll: () => void;
+    /** Force a token for API */
+    setApiToken: (token: string) => void;
+    getApiToken: () => TokenStore;
     /**
      * @param force Force interaction with API server
      * @method isReady

@@ -7,7 +7,13 @@ export interface BaseProviderOptions {
     debug?: boolean;
     timeout: number;
 }
+export interface TokenStore {
+    token: string;
+    expires?: number;
+}
+declare type ApiTokenSetter = string | TokenStore;
 export declare class BaseProvider {
+    private tokenStore;
     private debug;
     private loggingPrefix;
     private cancelSources;
@@ -21,7 +27,8 @@ export declare class BaseProvider {
     protected configureResponses(): this;
     protected configureRequests(token?: string): this;
     protected configureAxios(token?: string): this;
-    setApiToken(token: string): void;
+    setApiToken(token: ApiTokenSetter): void;
+    getApiToken(): TokenStore;
     /**
      * Cancel all requests to `Maxbot` server
      * @method cancelAll
