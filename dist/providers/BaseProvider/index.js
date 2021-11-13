@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseProvider = void 0;
 const axios_1 = __importDefault(require("axios"));
 const camelcase_keys_1 = __importDefault(require("camelcase-keys"));
-const decamelcase_1 = __importDefault(require("../../helpers/decamelcase"));
+const decamelcase_1 = require("../../helpers/decamelcase");
 const onResponseError_1 = require("./onResponseError");
 class BaseProvider {
     debug;
@@ -61,7 +61,7 @@ class BaseProvider {
             };
             if (token)
                 config.headers['authorization'] = token;
-            config.data = (0, decamelcase_1.default)(config.data);
+            config.data = (0, decamelcase_1.decamelcase)(config.data);
             this.log('REQUEST:', config.data);
             return config;
         });

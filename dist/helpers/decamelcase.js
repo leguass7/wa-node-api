@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.decamelcaseStr = void 0;
+exports.decamelcase = exports.decamelcaseStr = void 0;
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 const object_1 = require("./object");
 function decamelcaseStr(text, separator = '_') {
@@ -31,4 +31,4 @@ function decamelcase(input) {
         return decamelcaseStr(`${input}`);
     return mapObject(input);
 }
-exports.default = decamelcase;
+exports.decamelcase = decamelcase;
