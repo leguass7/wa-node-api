@@ -42,7 +42,7 @@ export type {
 
 export { createProvider, createMaxbotProvider, createSacDigitalProvider } from './createProvider';
 export { IResultError } from './providers/BaseProvider';
-export { ForWhoType, IForWhoFilter } from './providers/BaseProvider/IProvider';
+export { ForWhoType, IForWhoFilter, IProvider, IAllowedExt } from './providers/BaseProvider/IProvider';
 
 //Helpers
 export { decamelcase } from './helpers/decamelcase';
