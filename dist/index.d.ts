@@ -4,7 +4,7 @@ export { SacDigital } from './providers/SacDigital';
 export type { SacDigitalOptions, ISacDigitalRequestSend, ISacDigitalResponse, ISacDigitalResponseSendText, ISacDigitalContactFilter, ISacDigitalContact, ISacDigitalDepartment, ISacDigitalResponseContacts, ISacDigitalResponseDepartments, } from './providers/SacDigital/types';
 export { authScopes } from './providers/SacDigital/constants';
 export type { IResponseApi, IResponseSending, IContact, IReponseContacts, IDepartment, IReponseDepartment, IAttendant, IReponseAttendants, } from './interfaces';
-export { createProvider, createMaxbotProvider, createSacDigitalProvider } from './createProvider';
+export { createProvider, createMaxbotProvider, createSacDigitalProvider, ProviderType } from './createProvider';
 export { IResultError, TokenStore } from './providers/BaseProvider';
 export { ForWhoType, IForWhoFilter, IProvider, IAllowedExt } from './providers/BaseProvider/IProvider';
 export { decamelcase } from './helpers/decamelcase';
