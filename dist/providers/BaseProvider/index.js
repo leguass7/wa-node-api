@@ -9,6 +9,7 @@ const camelcase_keys_1 = __importDefault(require("camelcase-keys"));
 const decamelcase_1 = require("../../helpers/decamelcase");
 const onResponseError_1 = require("./onResponseError");
 class BaseProvider {
+    tokenStore;
     debug;
     loggingPrefix;
     cancelSources;
@@ -56,11 +57,12 @@ class BaseProvider {
     configureRequests(token) {
         this.Api.interceptors.request.use(config => {
             config.headers = {
-                'user-agent': `wa-node-api/1.0 (+https://github.com/leguass7/wa-node-api.git)`,
+                'User-Agent': `wa-node-api/v1 (+https://github.com/leguass7/wa-node-api.git) axios/${axios_1.default.VERSION}`,
                 'Content-Type': 'application/json',
             };
-            if (token)
-                config.headers['authorization'] = token;
+            const sendToken = token || this.tokenStore?.token;
+            if (sendToken)
+                config.headers['authorization'] = sendToken;
             config.data = (0, decamelcase_1.decamelcase)(config.data);
             this.log('REQUEST:', config.data);
             return config;
@@ -71,7 +73,16 @@ class BaseProvider {
         return this.configureRequests(token).configureResponses();
     }
     setApiToken(token) {
-        this.Api.defaults.headers['authorization'] = token;
+        if (typeof token === 'string') {
+            this.tokenStore = { token };
+        }
+        else {
+            this.tokenStore = token;
+        }
+        this.Api.defaults.headers['authorization'] = this.tokenStore.token;
+    }
+    getApiToken() {
+        return this.tokenStore;
     }
     /**
      * Cancel all requests to `Maxbot` server
