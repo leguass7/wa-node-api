@@ -1,6 +1,6 @@
 {
   "name": "wa-node-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist",
@@ -9,7 +9,13 @@
     "url": "https://github.com/leguass7/wa-node-api.git"
   },
   "author": "Leandro Sbrissa <leandro.sbrissa@hotmail.com>",
-  "keywords": ["nodejs", "whatsapp", "api", "maxbot", "sacdigital"],
+  "keywords": [
+    "nodejs",
+    "whatsapp",
+    "api",
+    "maxbot",
+    "sacdigital"
+  ],
   "files": [
     "dist/",
     "LICENSE",
