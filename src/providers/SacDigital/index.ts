@@ -1,4 +1,5 @@
 import { AxiosRequestConfig } from 'axios';
+import camelcaseKeys from 'camelcase-keys';
 import { isWebUri } from 'valid-url';
 
 import { extractExtension, isValidExt, querystring } from '@helpers/string';
@@ -76,7 +77,7 @@ export class SacDigital extends BaseProvider implements IProvider {
         { timeout: this.config.timeout },
       );
       this.authenticating = false;
-      return response && response.data;
+      return response && response?.data ? camelcaseKeys(response.data) : null;
     } catch {
       this.authenticating = false;
       return null;
