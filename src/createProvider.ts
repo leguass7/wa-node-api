@@ -10,8 +10,8 @@ export type ProviderType = 'maxbot' | 'sacdigital';
  * Factory of new provider
  * @function createProvider
  */
-export function createProvider(provider: 'maxbot', options: MaxbotOptions): Maxbot | IProvider;
-export function createProvider(provider: 'sacdigital', options: SacDigitalOptions): SacDigital | IProvider;
+// export function createProvider(provider: 'maxbot', options: MaxbotOptions): Maxbot | IProvider;
+// export function createProvider(provider: 'sacdigital', options: SacDigitalOptions): SacDigital | IProvider;
 export function createProvider(provider: ProviderType, options: MaxbotOptions | SacDigitalOptions): IProvider {
   if (provider === 'maxbot') return new Maxbot(options as MaxbotOptions);
   if (provider === 'sacdigital') return new SacDigital(options as SacDigitalOptions);

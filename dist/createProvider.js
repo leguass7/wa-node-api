@@ -3,6 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createSacDigitalProvider = exports.createMaxbotProvider = exports.createProvider = void 0;
 const Maxbot_1 = require("./providers/Maxbot");
 const SacDigital_1 = require("./providers/SacDigital");
+/**
+ * Factory of new provider
+ * @function createProvider
+ */
+// export function createProvider(provider: 'maxbot', options: MaxbotOptions): Maxbot | IProvider;
+// export function createProvider(provider: 'sacdigital', options: SacDigitalOptions): SacDigital | IProvider;
 function createProvider(provider, options) {
     if (provider === 'maxbot')
         return new Maxbot_1.Maxbot(options);

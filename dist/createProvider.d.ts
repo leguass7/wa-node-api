@@ -8,8 +8,7 @@ export declare type ProviderType = 'maxbot' | 'sacdigital';
  * Factory of new provider
  * @function createProvider
  */
-export declare function createProvider(provider: 'maxbot', options: MaxbotOptions): Maxbot | IProvider;
-export declare function createProvider(provider: 'sacdigital', options: SacDigitalOptions): SacDigital | IProvider;
+export declare function createProvider(provider: ProviderType, options: MaxbotOptions | SacDigitalOptions): IProvider;
 /**
  * Factory of new Maxbot provider
  * @function createMaxbotProvider
