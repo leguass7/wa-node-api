@@ -94,7 +94,7 @@ export class SacDigital extends BaseProvider implements IProvider {
       const auth = await this.authorize();
       if (auth && auth.token) {
         this.config.token = auth.token;
-        this.setApiToken({ token: this.config.token, expires: auth.expiresIn });
+        this.setApiToken({ ...auth });
       }
     } else {
       this.setApiToken(this.config.token);

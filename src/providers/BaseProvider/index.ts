@@ -18,6 +18,7 @@ export interface BaseProviderOptions {
 export interface TokenStore {
   token: string;
   expires?: number;
+  expiresIn?: number;
 }
 
 type ApiTokenSetter = string | TokenStore;
