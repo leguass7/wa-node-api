@@ -72,7 +72,7 @@ class SacDigital extends BaseProvider_1.BaseProvider {
             const auth = await this.authorize();
             if (auth && auth.token) {
                 this.config.token = auth.token;
-                this.setApiToken({ ...auth });
+                this.setApiToken({ token: auth.token, expires: auth.expiresIn });
             }
         }
         else {
