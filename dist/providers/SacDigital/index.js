@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SacDigital = void 0;
+const camelcase_keys_1 = __importDefault(require("camelcase-keys"));
 const valid_url_1 = require("valid-url");
 const string_1 = require("../../helpers/string");
 const BaseProvider_1 = require("../BaseProvider");
@@ -52,7 +56,7 @@ class SacDigital extends BaseProvider_1.BaseProvider {
                 scopes: this.config.scopes,
             }, { timeout: this.config.timeout });
             this.authenticating = false;
-            return response && response.data;
+            return response && response?.data ? (0, camelcase_keys_1.default)(response.data) : null;
         }
         catch {
             this.authenticating = false;
@@ -68,7 +72,7 @@ class SacDigital extends BaseProvider_1.BaseProvider {
             const auth = await this.authorize();
             if (auth && auth.token) {
                 this.config.token = auth.token;
-                this.setApiToken({ token: this.config.token, expires: auth.expiresIn });
+                this.setApiToken({ ...auth });
             }
         }
         else {
