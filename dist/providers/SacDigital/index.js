@@ -146,7 +146,8 @@ class SacDigital extends BaseProvider_1.BaseProvider {
             const res = await this.apiPost(constants_1.ReqType.NOTIFICATION, payload);
             return (0, dto_1.responseSendingDto)(res);
         }
-        catch {
+        catch (error) {
+            this.log('\n\n', 'ERROR AQUI', error, '\n\n');
             return this.buildError('unexpected error');
         }
     }
