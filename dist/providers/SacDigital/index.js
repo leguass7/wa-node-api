@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SacDigital = void 0;
 const camelcase_keys_1 = __importDefault(require("camelcase-keys"));
-const date_fns_1 = require("date-fns");
 const valid_url_1 = require("valid-url");
 const string_1 = require("../../helpers/string");
 const BaseProvider_1 = require("../BaseProvider");
@@ -69,21 +68,16 @@ class SacDigital extends BaseProvider_1.BaseProvider {
         return !!((0, valid_url_1.isWebUri)(url) && (0, string_1.isValidExt)(extension, this.allowedExt, type));
     }
     isExpiredToken() {
-        const expiresDate = this.config?.tokenExpireDate;
-        if (!expiresDate)
-            return false;
-        const dateExp = (0, date_fns_1.parse)(expiresDate, 'yyyy-MM-dd HH:mm:ss', new Date());
-        if (!(0, date_fns_1.isValid)(dateExp))
-            return true;
-        const diff = (0, date_fns_1.differenceInMinutes)(dateExp, new Date());
-        return !!(diff < this.config.maxMinutes);
+        return (0, string_1.isExpiredToken)(this.config?.tokenExpireDate, this.config.maxMinutes);
     }
     async init() {
         if (!this.config.token) {
             const auth = await this.authorize();
             if (auth && auth.token) {
+                const tokenExpireDate = (0, string_1.formatTokenExp)(auth?.expiresIn);
                 this.config.token = auth.token;
-                this.setApiToken({ token: auth.token, expires: auth.expiresIn });
+                this.config.tokenExpireDate = tokenExpireDate;
+                this.setApiToken({ token: auth.token, expires: auth.expiresIn, tokenExpireDate });
             }
         }
         else if (this.config?.tokenExpireDate) {

@@ -1,6 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.extractJSON = exports.querystring = exports.isValidExt = exports.extractExtension = exports.replaceAll = void 0;
+exports.extractJSON = exports.querystring = exports.isValidExt = exports.extractExtension = exports.replaceAll = exports.formatTokenExp = exports.isExpiredToken = void 0;
+const date_fns_1 = require("date-fns");
+function isExpiredToken(expiresDate, maxMinutes = 1440) {
+    if (!expiresDate)
+        return false;
+    const dateExp = (0, date_fns_1.parse)(expiresDate, 'yyyy-MM-dd HH:mm:ss', new Date());
+    if (!(0, date_fns_1.isValid)(dateExp))
+        return true;
+    const diff = (0, date_fns_1.differenceInMinutes)(dateExp, new Date());
+    return !!(diff < maxMinutes);
+}
+exports.isExpiredToken = isExpiredToken;
+function formatTokenExp(expires = 0) {
+    const date = (0, date_fns_1.addSeconds)(new Date(), expires);
+    return (0, date_fns_1.format)(date, 'yyyy-MM-dd HH:mm:ss');
+}
+exports.formatTokenExp = formatTokenExp;
 function replaceAll(str, needle, replacement) {
     if (!str)
         return '';

@@ -18,6 +18,7 @@ describe('Maxbot Test', () => {
 
   test('Should a class', () => {
     expect(provider).toBeInstanceOf(Maxbot);
+    expect(provider.getApiToken()).toHaveProperty('token');
   });
 
   describe('API delivery test', () => {

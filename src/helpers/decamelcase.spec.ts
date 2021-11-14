@@ -1,4 +1,4 @@
-import decamelcase, { decamelcaseStr } from './decamelcase';
+import { decamelcase, decamelcaseStr } from './decamelcase';
 
 describe('Helpers decalmelcase Test', () => {
   test('should decamelize string', () => {

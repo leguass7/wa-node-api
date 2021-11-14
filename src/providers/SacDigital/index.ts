@@ -1,9 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
-import { parse, isValid, differenceInMinutes } from 'date-fns';
 import { isWebUri } from 'valid-url';
 
-import { extractExtension, isValidExt, querystring } from '@helpers/string';
+import { extractExtension, formatTokenExp, isExpiredToken, isValidExt, querystring } from '@helpers/string';
 import type { IResponseSending, IReponseDepartment, IReponseContacts, IReponseAttendants } from '@interfaces/index';
 
 import { BaseProvider, IResultError } from '../BaseProvider';
@@ -91,21 +90,18 @@ export class SacDigital extends BaseProvider implements IProvider {
   }
 
   private isExpiredToken() {
-    const expiresDate = this.config?.tokenExpireDate;
-    if (!expiresDate) return false;
-
-    const dateExp = parse(expiresDate, 'yyyy-MM-dd HH:mm:ss', new Date());
-    if (!isValid(dateExp)) return true;
-    const diff = differenceInMinutes(dateExp, new Date());
-    return !!(diff < this.config.maxMinutes);
+    return isExpiredToken(this.config?.tokenExpireDate, this.config.maxMinutes);
   }
 
   private async init(): Promise<this> {
     if (!this.config.token) {
       const auth = await this.authorize();
       if (auth && auth.token) {
+        const tokenExpireDate = formatTokenExp(auth?.expiresIn);
+
         this.config.token = auth.token;
-        this.setApiToken({ token: auth.token, expires: auth.expiresIn });
+        this.config.tokenExpireDate = tokenExpireDate;
+        this.setApiToken({ token: auth.token, expires: auth.expiresIn, tokenExpireDate });
       }
     } else if (this.config?.tokenExpireDate) {
       if (this.isExpiredToken()) {

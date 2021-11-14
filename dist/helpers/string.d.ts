@@ -1,4 +1,6 @@
 import { IAllowedExt } from '../providers/BaseProvider/IProvider';
+export declare function isExpiredToken(expiresDate?: string, maxMinutes?: number): boolean;
+export declare function formatTokenExp(expires?: number): string;
 export declare function replaceAll(str: string, needle?: string | string[], replacement?: string): string;
 export declare function extractExtension(url: string): string;
 export declare function isValidExt(extension: string, allowedExt: IAllowedExt, type?: keyof IAllowedExt): boolean;

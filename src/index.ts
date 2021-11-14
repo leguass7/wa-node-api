@@ -46,3 +46,4 @@ export { ForWhoType, IForWhoFilter, IProvider, IAllowedExt } from './providers/B
 
 //Helpers
 export { decamelcase } from './helpers/decamelcase';
+export { formatTokenExp, isExpiredToken } from './helpers/string';

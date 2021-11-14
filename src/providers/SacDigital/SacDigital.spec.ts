@@ -34,6 +34,7 @@ describe('SacDigital Test', () => {
 
   test('Should a class', () => {
     expect(provider).toBeInstanceOf(SacDigital);
+    expect(provider.getApiToken()).toHaveProperty('token');
   });
 
   describe('API delivery test', () => {

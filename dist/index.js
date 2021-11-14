@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.decamelcase = exports.createSacDigitalProvider = exports.createMaxbotProvider = exports.createProvider = exports.authScopes = exports.SacDigital = exports.Maxbot = void 0;
+exports.isExpiredToken = exports.formatTokenExp = exports.decamelcase = exports.createSacDigitalProvider = exports.createMaxbotProvider = exports.createProvider = exports.authScopes = exports.SacDigital = exports.Maxbot = void 0;
 // Maxbot
 var Maxbot_1 = require("./providers/Maxbot");
 Object.defineProperty(exports, "Maxbot", { enumerable: true, get: function () { return Maxbot_1.Maxbot; } });
@@ -16,3 +16,6 @@ Object.defineProperty(exports, "createSacDigitalProvider", { enumerable: true, g
 //Helpers
 var decamelcase_1 = require("./helpers/decamelcase");
 Object.defineProperty(exports, "decamelcase", { enumerable: true, get: function () { return decamelcase_1.decamelcase; } });
+var string_1 = require("./helpers/string");
+Object.defineProperty(exports, "formatTokenExp", { enumerable: true, get: function () { return string_1.formatTokenExp; } });
+Object.defineProperty(exports, "isExpiredToken", { enumerable: true, get: function () { return string_1.isExpiredToken; } });

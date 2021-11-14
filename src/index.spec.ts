@@ -1,4 +1,4 @@
-import { createProvider, Maxbot, SacDigital } from '.';
+import { createProvider, IProvider, Maxbot, SacDigital } from '.';
 
 const env = {
   tokenMaxbot: process.env.MAXBOT_TOKEN,
@@ -10,7 +10,7 @@ const env = {
 };
 
 describe('SacDigital Test', () => {
-  let provider: SacDigital | Maxbot;
+  let provider: SacDigital | Maxbot | IProvider;
   jest.setTimeout(10000);
 
   afterAll(async () => {
@@ -20,7 +20,7 @@ describe('SacDigital Test', () => {
   });
 
   test('Should create maxbot provider', async () => {
-    provider = createProvider('maxbot', { token: env.tokenMaxbot });
+    provider = createProvider('maxbot', { token: env.tokenMaxbot, debug: true });
     expect(provider).toBeInstanceOf(Maxbot);
   });
 

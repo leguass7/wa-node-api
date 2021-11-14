@@ -8,3 +8,4 @@ export { createProvider, createMaxbotProvider, createSacDigitalProvider, Provide
 export { IResultError, TokenStore } from './providers/BaseProvider';
 export { ForWhoType, IForWhoFilter, IProvider, IAllowedExt } from './providers/BaseProvider/IProvider';
 export { decamelcase } from './helpers/decamelcase';
+export { formatTokenExp, isExpiredToken } from './helpers/string';

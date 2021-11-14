@@ -1,4 +1,19 @@
+import { parse, isValid, differenceInMinutes, addSeconds, format } from 'date-fns';
+
 import { IAllowedExt } from '../providers/BaseProvider/IProvider';
+
+export function isExpiredToken(expiresDate?: string, maxMinutes = 1440): boolean {
+  if (!expiresDate) return false;
+  const dateExp = parse(expiresDate, 'yyyy-MM-dd HH:mm:ss', new Date());
+  if (!isValid(dateExp)) return true;
+  const diff = differenceInMinutes(dateExp, new Date());
+  return !!(diff < maxMinutes);
+}
+
+export function formatTokenExp(expires = 0): string {
+  const date = addSeconds(new Date(), expires);
+  return format(date, 'yyyy-MM-dd HH:mm:ss');
+}
 
 export function replaceAll(str: string, needle?: string | string[], replacement?: string): string {
   if (!str) return '';

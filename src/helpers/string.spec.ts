@@ -1,5 +1,6 @@
-import { replaceAll, extractExtension, isValidExt, querystring, extractJSON } from './string';
+import { addMinutes, format } from 'date-fns';
 
+import { replaceAll, extractExtension, isValidExt, querystring, extractJSON, isExpiredToken } from './string';
 const urls = [
   'http://whatsapp.sac.digital/_midia/galeria/27F7F3DF9C/imagem/5824d4f759bb0.jpg',
   'http://whatsapp.sac.digital/_midia/galeria/ABF47AD9CO/video/3747b6fe67153aea5f7ebcd8b5b6e6085a097c25478be.mp4',
@@ -13,6 +14,17 @@ const allowedExt = {
 };
 
 describe('Helpers string Test', () => {
+  test('should test isExpiredToken', () => {
+    const newDate = addMinutes(new Date(), 2440);
+    const formatted = format(newDate, 'yyyy-MM-dd HH:mm:ss');
+
+    expect(isExpiredToken(formatted)).toEqual(false);
+    expect(isExpiredToken(formatted, 2440)).toEqual(true);
+    expect(isExpiredToken('1999-01-01 00:00:00')).toEqual(true);
+    expect(isExpiredToken()).toEqual(false);
+    expect(isExpiredToken('invalid')).toEqual(true);
+  });
+
   test('should test replaceAll', () => {
     expect(replaceAll('primeiro segundo', ' ')).toEqual('primeiro,segundo');
     expect(replaceAll('primeiro segundo', ' ', '')).toEqual('primeirosegundo');
