@@ -19,7 +19,9 @@ export function forWhoFilterDto(forWhoFilter: ForWhoType): string {
   return contactId;
 }
 
-export function responseSendingDto(data: ISacDigitalResponseSendText): IResponseSending {
+export function responseSendingDto(data?: ISacDigitalResponseSendText): IResponseSending {
+  if (!data) return { status: false, message: 'no response data' };
+
   const { status, message, notificationId } = data;
 
   const result: IResponseSending = {

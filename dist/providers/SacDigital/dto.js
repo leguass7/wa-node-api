@@ -7,6 +7,8 @@ function forWhoFilterDto(forWhoFilter) {
 }
 exports.forWhoFilterDto = forWhoFilterDto;
 function responseSendingDto(data) {
+    if (!data)
+        return { status: false, message: 'no response data' };
     const { status, message, notificationId } = data;
     const result = {
         status: status ? true : false,

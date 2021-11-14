@@ -5,7 +5,7 @@ import type { ISacDigitalResponseDepartments } from './types/department';
 import type { ISacDigitalResponseOperators } from './types/operator';
 import type { ISacDigitalResponseSendText } from './types/sending';
 export declare function forWhoFilterDto(forWhoFilter: ForWhoType): string;
-export declare function responseSendingDto(data: ISacDigitalResponseSendText): IResponseSending;
+export declare function responseSendingDto(data?: ISacDigitalResponseSendText): IResponseSending;
 export declare function responseDepartmentsDto(data: ISacDigitalResponseDepartments): IReponseDepartment;
 export declare function responseContactsDto(dataContacts: ISacDigitalResponseContacts): IReponseContacts;
 declare type QueryFilter = ISacDigitalContactFilter & {
