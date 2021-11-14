@@ -17,7 +17,8 @@ export async function onResponseError(error?: AxiosError): Promise<{ data: IResu
   if (!response) return Promise.resolve({ data: result });
 
   if (typeof response === 'string') {
-    return Promise.resolve(Object.assign({}, result, convertStringResponseData(response)));
+    const data = Object.assign({}, result, convertStringResponseData(response));
+    return Promise.resolve({ data });
   }
 
   result.message = `httpError ${statusHttp}`;

@@ -9,7 +9,8 @@ async function onResponseError(error) {
     if (!response)
         return Promise.resolve({ data: result });
     if (typeof response === 'string') {
-        return Promise.resolve(Object.assign({}, result, convertStringResponseData(response)));
+        const data = Object.assign({}, result, convertStringResponseData(response));
+        return Promise.resolve({ data });
     }
     result.message = `httpError ${statusHttp}`;
     return Promise.resolve({ data: result });
