@@ -67,7 +67,7 @@ export class BaseProvider {
 
   protected configureResponses() {
     this.Api.interceptors.response.use(response => {
-      this.log('RESPONSE:', response?.data);
+      this.log('RESPONSE:', typeof response?.data, response?.data);
       if (response?.data && typeof response?.data === 'string') {
         return camelcaseKeys(convertStringResponseData(response?.data), { deep: true });
       }
