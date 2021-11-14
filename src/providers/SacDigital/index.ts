@@ -175,9 +175,9 @@ export class SacDigital extends BaseProvider implements IProvider {
   private async sendNotification(payload: ISacDigitalRequestSend): Promise<IResponseSending | IResultError> {
     try {
       const res = await this.apiPost(ReqType.NOTIFICATION, payload);
-
       return responseSendingDto(res);
-    } catch {
+    } catch (error) {
+      this.log('\n\n', 'ERROR AQUI', error, '\n\n');
       return this.buildError('unexpected error');
     }
   }
