@@ -142,6 +142,8 @@ class SacDigital extends BaseProvider_1.BaseProvider {
         return this.buildError('API is not ready');
     }
     async sendNotification(payload) {
+        if (!payload?.contact)
+            return this.buildError('no contact informed');
         try {
             const res = await this.apiPost(constants_1.ReqType.NOTIFICATION, payload);
             return (0, dto_1.responseSendingDto)(res);

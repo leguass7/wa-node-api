@@ -46,11 +46,12 @@ class BaseProvider {
     }
     configureResponses() {
         this.Api.interceptors.response.use(response => {
-            this.log('RESPONSE:', typeof response?.data, response?.data);
-            if (response?.data && typeof response?.data === 'string') {
-                return (0, camelcase_keys_1.default)((0, onResponseError_1.convertStringResponseData)(response?.data), { deep: true });
+            const data = response?.data || response;
+            this.log(`RESPONSE: (${response?.statusText})`, typeof data, data);
+            if (data && typeof data === 'string') {
+                return (0, camelcase_keys_1.default)((0, onResponseError_1.convertStringResponseData)(data), { deep: true });
             }
-            return (0, camelcase_keys_1.default)(response.data, { deep: true });
+            return (0, camelcase_keys_1.default)(data, { deep: true });
         }, onResponseError_1.onResponseError);
         return this;
     }

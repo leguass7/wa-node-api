@@ -173,6 +173,7 @@ export class SacDigital extends BaseProvider implements IProvider {
   }
 
   private async sendNotification(payload: ISacDigitalRequestSend): Promise<IResponseSending | IResultError> {
+    if (!payload?.contact) return this.buildError('no contact informed');
     try {
       const res = await this.apiPost(ReqType.NOTIFICATION, payload);
       return responseSendingDto(res);

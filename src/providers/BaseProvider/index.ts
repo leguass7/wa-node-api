@@ -67,11 +67,12 @@ export class BaseProvider {
 
   protected configureResponses() {
     this.Api.interceptors.response.use(response => {
-      this.log('RESPONSE:', typeof response?.data, response?.data);
-      if (response?.data && typeof response?.data === 'string') {
-        return camelcaseKeys(convertStringResponseData(response?.data), { deep: true });
+      const data = response?.data || response;
+      this.log(`RESPONSE: (${response?.statusText})`, typeof data, data);
+      if (data && typeof data === 'string') {
+        return camelcaseKeys(convertStringResponseData(data), { deep: true });
       }
-      return camelcaseKeys(response.data, { deep: true });
+      return camelcaseKeys(data, { deep: true });
     }, onResponseError);
     return this;
   }
