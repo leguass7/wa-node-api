@@ -204,7 +204,7 @@ class SacDigital extends BaseProvider_1.BaseProvider {
         const res = await this.apiGet(constants_1.ReqType.DEPARTMENT);
         return (0, dto_1.responseDepartmentsDto)(res);
     }
-    async getContact(filter) {
+    async getContacts(filter) {
         const query = (0, dto_1.queryContactFilterDto)(filter);
         const res = await this.apiGet(constants_1.ReqType.GETCONTACT, query);
         return (0, dto_1.responseContactsDto)(res);

@@ -12,3 +12,8 @@ export interface IContact {
 export interface IReponseContacts extends IResponseApi {
     contacts: IContact[];
 }
+export interface IContactFilter {
+    whatsapp?: string;
+    email?: string;
+    externalId?: number;
+}

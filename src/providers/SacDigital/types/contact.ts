@@ -2,11 +2,10 @@ import type { ISacDigitalResponse } from './api';
 
 type Gender = 'M' | 'F' | 'I';
 
-export interface ISacDigitalContactFilter {
-  search?: string;
-  whatsapp?: string;
-  email?: string;
-}
+// export interface ISacDigitalContactFilter extends IContactFilter {
+//   search?: string;
+//   email?: string;
+// }
 
 export interface ISacDigitalContact {
   id: string;

@@ -1,9 +1,8 @@
-import type { IResponseSending, IReponseContacts, IReponseAttendants, IReponseDepartment } from '../../interfaces/index';
+import type { IResponseSending, IReponseContacts, IReponseAttendants, IReponseDepartment, IContactFilter } from '../../interfaces/index';
 import { BaseProvider, IResultError } from '../BaseProvider';
 import { ForWhoType, IProvider } from '../BaseProvider/IProvider';
 import { ReqType } from './constants';
 import type { MaxbotOptions } from './types/api';
-import type { IMaxbotContactFilter } from './types/contact';
 import type { IResponseStatus } from './types/status';
 /**
  * Class to interact with maxbot server
@@ -24,6 +23,6 @@ export declare class Maxbot extends BaseProvider implements IProvider {
     sendSound(whatsapp: ForWhoType, urlSound: string): Promise<IResponseSending | IResultError>;
     sendVideo(whatsapp: ForWhoType, urlVideo: string, _text?: string): Promise<IResponseSending | IResultError>;
     getServiceSector(): Promise<IReponseDepartment>;
-    getContact(filter: IMaxbotContactFilter): Promise<IReponseContacts>;
+    getContacts(filter: IContactFilter): Promise<IReponseContacts>;
     getAttendant(): Promise<IReponseAttendants>;
 }

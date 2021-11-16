@@ -20,7 +20,6 @@ export type {
   ISacDigitalRequestSend,
   ISacDigitalResponse,
   ISacDigitalResponseSendText,
-  ISacDigitalContactFilter,
   ISacDigitalContact,
   ISacDigitalDepartment,
   ISacDigitalResponseContacts,

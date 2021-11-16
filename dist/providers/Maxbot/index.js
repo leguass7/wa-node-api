@@ -128,7 +128,7 @@ class Maxbot extends BaseProvider_1.BaseProvider {
         const res = await this.apiPost(constants_1.ReqType.GETSERVICESECTOR);
         return (0, dto_1.responseServiceSectorDto)(res);
     }
-    async getContact(filter) {
+    async getContacts(filter) {
         const res = await this.apiPost(constants_1.ReqType.GETCONTACT, filter);
         return (0, dto_1.responseContactsDto)(res);
     }
