@@ -3,7 +3,13 @@ import camelcaseKeys from 'camelcase-keys';
 import { isWebUri } from 'valid-url';
 
 import { extractExtension, formatTokenExp, isExpiredToken, isValidExt, querystring } from '@helpers/string';
-import type { IResponseSending, IReponseDepartment, IReponseContacts, IReponseAttendants } from '@interfaces/index';
+import type {
+  IResponseSending,
+  IReponseDepartment,
+  IReponseContacts,
+  IReponseAttendants,
+  IContactFilter,
+} from '@interfaces/index';
 
 import { BaseProvider, IResultError } from '../BaseProvider';
 import type { ForWhoType, IAllowedExt, IProvider } from '../BaseProvider/IProvider';
@@ -17,7 +23,6 @@ import {
   responseSendingDto,
 } from './dto';
 import type { SacDigitalOptions, ISacDigitalResponseAuth } from './types/api';
-import type { ISacDigitalContactFilter } from './types/contact';
 import type { ISacDigitalResponseDepartments } from './types/department';
 import type { ISacDigitalRequestSend } from './types/sending';
 
@@ -240,7 +245,7 @@ export class SacDigital extends BaseProvider implements IProvider {
     return responseDepartmentsDto(res);
   }
 
-  async getContact(filter: ISacDigitalContactFilter): Promise<IReponseContacts | IResultError> {
+  async getContacts(filter: IContactFilter): Promise<IReponseContacts | IResultError> {
     const query = queryContactFilterDto(filter);
     const res = await this.apiGet(ReqType.GETCONTACT, query);
     return responseContactsDto(res);

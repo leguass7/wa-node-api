@@ -1,3 +1,4 @@
+import { isObject } from '@helpers/object';
 import type {
   IResponseSending,
   IDepartment,
@@ -6,10 +7,11 @@ import type {
   IContact,
   IReponseAttendants,
   IAttendant,
+  IContactFilter,
 } from '@interfaces/index';
 
 import type { ForWhoType } from '../BaseProvider/IProvider';
-import type { ISacDigitalContactFilter, ISacDigitalResponseContacts } from './types/contact';
+import type { ISacDigitalResponseContacts } from './types/contact';
 import type { ISacDigitalResponseDepartments } from './types/department';
 import type { ISacDigitalResponseOperators } from './types/operator';
 import type { ISacDigitalResponseSendText } from './types/sending';
@@ -51,13 +53,22 @@ export function responseContactsDto(dataContacts: ISacDigitalResponseContacts): 
   return { ...rest, contacts };
 }
 
-type QueryFilter = ISacDigitalContactFilter & { p: number; filter: number };
-export function queryContactFilterDto(filter: ISacDigitalContactFilter): QueryFilter {
-  const result: QueryFilter = { p: 1, filter: 1, search: filter?.whatsapp || filter?.search };
+type QueryFilter = IContactFilter & { p: number; filter: number; search?: string };
+export function queryContactFilterDto(filter: IContactFilter): QueryFilter {
+  const result: QueryFilter = { p: 1, filter: 1 };
   if (filter?.email) {
     result.filter = 7;
-    result.search = filter?.email || filter?.search;
+    result.search = filter.email;
     return result;
+  }
+
+  const values = Object.values(filter);
+  for (let i = 0; i < values.length; i++) {
+    const value = values[i];
+    if (value && !isObject(value)) {
+      result.search = value;
+      return result;
+    }
   }
 
   return result;

@@ -1,8 +1,8 @@
 import type { CancelToken, CancelTokenSource } from 'axios';
 
+import type { IContactFilter, IReponseContacts, IReponseDepartment, IResponseSending } from '@interfaces/index';
+
 import { IResultError, TokenStore } from '.';
-import { IReponseDepartment } from '../../interfaces/IDepartment';
-import type { IResponseSending } from '../../interfaces/IResponseSending';
 
 export interface ICancelSource {
   idToken: CancelToken | string;
@@ -69,4 +69,5 @@ export interface IProvider {
   ) => Promise<IResponseSending | IResultError>;
 
   getServiceSector: () => Promise<IReponseDepartment | IResultError>;
+  getContacts: (filter: IContactFilter) => Promise<IReponseContacts | IResultError>;
 }

@@ -1,7 +1,13 @@
 import { isWebUri } from 'valid-url';
 
 import { extractExtension, isValidExt } from '@helpers/string';
-import type { IResponseSending, IReponseContacts, IReponseAttendants, IReponseDepartment } from '@interfaces/index';
+import type {
+  IResponseSending,
+  IReponseContacts,
+  IReponseAttendants,
+  IReponseDepartment,
+  IContactFilter,
+} from '@interfaces/index';
 
 import { BaseProvider, IResultError } from '../BaseProvider';
 import { ForWhoType, IAllowedExt, IProvider } from '../BaseProvider/IProvider';
@@ -21,7 +27,6 @@ import type {
   IMaxbotRequestSendVideo,
 } from './types';
 import type { MaxbotOptions } from './types/api';
-import type { IMaxbotContactFilter } from './types/contact';
 import type { IResponseStatus } from './types/status';
 
 /**
@@ -163,7 +168,7 @@ export class Maxbot extends BaseProvider implements IProvider {
     return responseServiceSectorDto(res);
   }
 
-  async getContact(filter: IMaxbotContactFilter): Promise<IReponseContacts> {
+  async getContacts(filter: IContactFilter): Promise<IReponseContacts> {
     const res = await this.apiPost(ReqType.GETCONTACT, filter);
     return responseContactsDto(res);
   }
