@@ -188,7 +188,7 @@ export class SacDigital extends BaseProvider implements IProvider {
     }
   }
 
-  public async sendText(contactId: ForWhoType, text: string): Promise<IResponseSending | IResultError> {
+  public async sendText(contactId: ForWhoType, text: string): Promise<IResponseSending> {
     const contact = forWhoFilterDto(contactId);
     if (contact && text) {
       const payload: ISacDigitalRequestSend = { contact, type: 'text', text };
@@ -198,7 +198,7 @@ export class SacDigital extends BaseProvider implements IProvider {
     return this.buildError('invalid payload');
   }
 
-  async sendImage(contactId: ForWhoType, urlImage: string, text?: string): Promise<IResponseSending | IResultError> {
+  async sendImage(contactId: ForWhoType, urlImage: string, text?: string): Promise<IResponseSending> {
     const contact = forWhoFilterDto(contactId);
 
     if (contact && this.isValidPayload(urlImage, 'image')) {
@@ -210,7 +210,7 @@ export class SacDigital extends BaseProvider implements IProvider {
     return this.buildError('invalid payload');
   }
 
-  async sendFile(contactId: ForWhoType, urlFile: string): Promise<IResponseSending | IResultError> {
+  async sendFile(contactId: ForWhoType, urlFile: string): Promise<IResponseSending> {
     const contact = forWhoFilterDto(contactId);
     if (contact && this.isValidPayload(urlFile, 'file')) {
       const payload: ISacDigitalRequestSend = { contact, type: 'file', url: urlFile };
@@ -220,7 +220,7 @@ export class SacDigital extends BaseProvider implements IProvider {
     return this.buildError('invalid payload');
   }
 
-  async sendSound(contactId: ForWhoType, urlSound: string): Promise<IResponseSending | IResultError> {
+  async sendSound(contactId: ForWhoType, urlSound: string): Promise<IResponseSending> {
     const contact = forWhoFilterDto(contactId);
     if (contact && this.isValidPayload(urlSound, 'sound')) {
       const payload: ISacDigitalRequestSend = { contact, type: 'audio', url: urlSound };
@@ -230,7 +230,7 @@ export class SacDigital extends BaseProvider implements IProvider {
     return this.buildError('invalid payload');
   }
 
-  async sendVideo(contactId: ForWhoType, urlVideo: string): Promise<IResponseSending | IResultError> {
+  async sendVideo(contactId: ForWhoType, urlVideo: string): Promise<IResponseSending> {
     const contact = forWhoFilterDto(contactId);
     if (contact && this.isValidPayload(urlVideo, 'video')) {
       const payload: ISacDigitalRequestSend = { contact, type: 'video', url: urlVideo };
@@ -240,18 +240,18 @@ export class SacDigital extends BaseProvider implements IProvider {
     return this.buildError('invalid payload');
   }
 
-  async getServiceSector(): Promise<IReponseDepartment | IResultError> {
+  async getServiceSector(): Promise<IReponseDepartment> {
     const res: ISacDigitalResponseDepartments = await this.apiGet(ReqType.DEPARTMENT);
     return responseDepartmentsDto(res);
   }
 
-  async getContacts(filter: IContactFilter): Promise<IReponseContacts | IResultError> {
+  async getContacts(filter: IContactFilter): Promise<IReponseContacts> {
     const query = queryContactFilterDto(filter);
     const res = await this.apiGet(ReqType.GETCONTACT, query);
     return responseContactsDto(res);
   }
 
-  async getAttendant(): Promise<IReponseAttendants | IResultError> {
+  async getAttendant(): Promise<IReponseAttendants> {
     const res = await this.apiGet(ReqType.GETATTENDANT);
     return responseAttendantsDto(res);
   }
