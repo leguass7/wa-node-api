@@ -1,21 +1,117 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isExpiredToken = exports.formatTokenExp = exports.decamelcase = exports.createSacDigitalProvider = exports.createMaxbotProvider = exports.createProvider = exports.authScopes = exports.SacDigital = exports.Maxbot = void 0;
-// Maxbot
-var Maxbot_1 = require("./providers/Maxbot");
-Object.defineProperty(exports, "Maxbot", { enumerable: true, get: function () { return Maxbot_1.Maxbot; } });
-// SacDigital
-var SacDigital_1 = require("./providers/SacDigital");
-Object.defineProperty(exports, "SacDigital", { enumerable: true, get: function () { return SacDigital_1.SacDigital; } });
-var constants_1 = require("./providers/SacDigital/constants");
-Object.defineProperty(exports, "authScopes", { enumerable: true, get: function () { return constants_1.authScopes; } });
-var createProvider_1 = require("./createProvider");
-Object.defineProperty(exports, "createProvider", { enumerable: true, get: function () { return createProvider_1.createProvider; } });
-Object.defineProperty(exports, "createMaxbotProvider", { enumerable: true, get: function () { return createProvider_1.createMaxbotProvider; } });
-Object.defineProperty(exports, "createSacDigitalProvider", { enumerable: true, get: function () { return createProvider_1.createSacDigitalProvider; } });
-//Helpers
-var decamelcase_1 = require("./helpers/decamelcase");
-Object.defineProperty(exports, "decamelcase", { enumerable: true, get: function () { return decamelcase_1.decamelcase; } });
-var string_1 = require("./helpers/string");
-Object.defineProperty(exports, "formatTokenExp", { enumerable: true, get: function () { return string_1.formatTokenExp; } });
-Object.defineProperty(exports, "isExpiredToken", { enumerable: true, get: function () { return string_1.isExpiredToken; } });
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "ForWhoType", {
+  enumerable: true,
+  get: function () {
+    return _IProvider.ForWhoType;
+  }
+});
+Object.defineProperty(exports, "IAllowedExt", {
+  enumerable: true,
+  get: function () {
+    return _IProvider.IAllowedExt;
+  }
+});
+Object.defineProperty(exports, "IForWhoFilter", {
+  enumerable: true,
+  get: function () {
+    return _IProvider.IForWhoFilter;
+  }
+});
+Object.defineProperty(exports, "IProvider", {
+  enumerable: true,
+  get: function () {
+    return _IProvider.IProvider;
+  }
+});
+Object.defineProperty(exports, "IResultError", {
+  enumerable: true,
+  get: function () {
+    return _BaseProvider.IResultError;
+  }
+});
+Object.defineProperty(exports, "Maxbot", {
+  enumerable: true,
+  get: function () {
+    return _Maxbot.Maxbot;
+  }
+});
+Object.defineProperty(exports, "ProviderType", {
+  enumerable: true,
+  get: function () {
+    return _createProvider.ProviderType;
+  }
+});
+Object.defineProperty(exports, "SacDigital", {
+  enumerable: true,
+  get: function () {
+    return _SacDigital.SacDigital;
+  }
+});
+Object.defineProperty(exports, "TokenStore", {
+  enumerable: true,
+  get: function () {
+    return _BaseProvider.TokenStore;
+  }
+});
+Object.defineProperty(exports, "authScopes", {
+  enumerable: true,
+  get: function () {
+    return _constants.authScopes;
+  }
+});
+Object.defineProperty(exports, "createMaxbotProvider", {
+  enumerable: true,
+  get: function () {
+    return _createProvider.createMaxbotProvider;
+  }
+});
+Object.defineProperty(exports, "createProvider", {
+  enumerable: true,
+  get: function () {
+    return _createProvider.createProvider;
+  }
+});
+Object.defineProperty(exports, "createSacDigitalProvider", {
+  enumerable: true,
+  get: function () {
+    return _createProvider.createSacDigitalProvider;
+  }
+});
+Object.defineProperty(exports, "decamelcase", {
+  enumerable: true,
+  get: function () {
+    return _decamelcase.decamelcase;
+  }
+});
+Object.defineProperty(exports, "formatTokenExp", {
+  enumerable: true,
+  get: function () {
+    return _string.formatTokenExp;
+  }
+});
+Object.defineProperty(exports, "isExpiredToken", {
+  enumerable: true,
+  get: function () {
+    return _string.isExpiredToken;
+  }
+});
+
+var _Maxbot = require("./providers/Maxbot");
+
+var _SacDigital = require("./providers/SacDigital");
+
+var _constants = require("./providers/SacDigital/constants");
+
+var _createProvider = require("./createProvider");
+
+var _BaseProvider = require("./providers/BaseProvider");
+
+var _IProvider = require("./providers/BaseProvider/IProvider");
+
+var _decamelcase = require("./helpers/decamelcase");
+
+var _string = require("./helpers/string");

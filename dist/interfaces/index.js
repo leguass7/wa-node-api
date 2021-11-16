@@ -1,16 +1,57 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./IResponseSending"), exports);
-__exportStar(require("./IContact"), exports);
-__exportStar(require("./IDepartment"), exports);
-__exportStar(require("./IAttendant"), exports);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _IResponseSending = require("./IResponseSending");
+
+Object.keys(_IResponseSending).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _IResponseSending[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _IResponseSending[key];
+    }
+  });
+});
+
+var _IContact = require("./IContact");
+
+Object.keys(_IContact).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _IContact[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _IContact[key];
+    }
+  });
+});
+
+var _IDepartment = require("./IDepartment");
+
+Object.keys(_IDepartment).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _IDepartment[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _IDepartment[key];
+    }
+  });
+});
+
+var _IAttendant = require("./IAttendant");
+
+Object.keys(_IAttendant).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _IAttendant[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _IAttendant[key];
+    }
+  });
+});
