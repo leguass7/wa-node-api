@@ -1,8 +1,9 @@
-import { FilterByDate, IMaxbotResponse } from './api';
+import { IContactFilter } from '../../../interfaces';
+import { IMaxbotResponse } from './api';
 declare type Profession = string[];
 declare type Gender = 'M' | 'F' | 'I';
 declare type PersonType = 'J' | 'F';
-export interface IMaxbotContactFilter extends FilterByDate {
+export interface IMaxbotContactFilter extends IContactFilter {
     whatsapp?: string;
     mobilePhone?: string;
     email?: string;

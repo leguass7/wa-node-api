@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.responseAttendantsDto = exports.queryContactFilterDto = exports.responseContactsDto = exports.responseDepartmentsDto = exports.responseSendingDto = exports.forWhoFilterDto = void 0;
+const object_1 = require("../../helpers/object");
 function forWhoFilterDto(forWhoFilter) {
     const contactId = typeof forWhoFilter === 'string' ? forWhoFilter : forWhoFilter?.contactId;
     return contactId;
@@ -35,11 +36,19 @@ function responseContactsDto(dataContacts) {
 }
 exports.responseContactsDto = responseContactsDto;
 function queryContactFilterDto(filter) {
-    const result = { p: 1, filter: 1, search: filter?.whatsapp || filter?.search };
+    const result = { p: 1, filter: 1 };
     if (filter?.email) {
         result.filter = 7;
-        result.search = filter?.email || filter?.search;
+        result.search = filter.email;
         return result;
+    }
+    const values = Object.values(filter);
+    for (let i = 0; i < values.length; i++) {
+        const value = values[i];
+        if (value && !(0, object_1.isObject)(value)) {
+            result.search = value;
+            return result;
+        }
     }
     return result;
 }

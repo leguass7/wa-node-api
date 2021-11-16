@@ -1,7 +1,6 @@
 import type { CancelToken, CancelTokenSource } from 'axios';
+import type { IContactFilter, IReponseContacts, IReponseDepartment, IResponseSending } from '../../interfaces/index';
 import { IResultError, TokenStore } from '.';
-import { IReponseDepartment } from '../../interfaces/IDepartment';
-import type { IResponseSending } from '../../interfaces/IResponseSending';
 export interface ICancelSource {
     idToken: CancelToken | string;
     source: CancelTokenSource;
@@ -50,4 +49,5 @@ export interface IProvider {
      */
     sendVideo: (forWho: IForWhoFilter | string, urlVideo: string, text?: string) => Promise<IResponseSending | IResultError>;
     getServiceSector: () => Promise<IReponseDepartment | IResultError>;
+    getContacts: (filter: IContactFilter) => Promise<IReponseContacts | IResultError>;
 }

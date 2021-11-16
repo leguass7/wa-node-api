@@ -1,10 +1,9 @@
 import { AxiosRequestConfig } from 'axios';
-import type { IResponseSending, IReponseDepartment, IReponseContacts, IReponseAttendants } from '../../interfaces/index';
+import type { IResponseSending, IReponseDepartment, IReponseContacts, IReponseAttendants, IContactFilter } from '../../interfaces/index';
 import { BaseProvider, IResultError } from '../BaseProvider';
 import type { ForWhoType, IProvider } from '../BaseProvider/IProvider';
 import { ReqType } from './constants';
 import type { SacDigitalOptions } from './types/api';
-import type { ISacDigitalContactFilter } from './types/contact';
 /**
  * Class to interact with SacDigital server
  * - https://sac.digital/
@@ -30,6 +29,6 @@ export declare class SacDigital extends BaseProvider implements IProvider {
     sendSound(contactId: ForWhoType, urlSound: string): Promise<IResponseSending | IResultError>;
     sendVideo(contactId: ForWhoType, urlVideo: string): Promise<IResponseSending | IResultError>;
     getServiceSector(): Promise<IReponseDepartment | IResultError>;
-    getContact(filter: ISacDigitalContactFilter): Promise<IReponseContacts | IResultError>;
+    getContacts(filter: IContactFilter): Promise<IReponseContacts | IResultError>;
     getAttendant(): Promise<IReponseAttendants | IResultError>;
 }
